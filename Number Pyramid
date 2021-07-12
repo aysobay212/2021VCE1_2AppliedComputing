@@ -1,0 +1,55 @@
+<?php include_once 'header.php'?>
+<div class="container">
+    <h3>Number Pyramid</h3><br>
+    <p>Please enter a positive number between 1-10 to form it's pyramid.</p>
+    <form method='post' action=''>
+        <label>Starting number: </label>
+        <input type='number' name='startingNumInput' autocomplete='off' min="1" max="10"> <!-- Gets the starting number input-->
+        <label>Number of lines: </label>
+        <input type='number' name='lineNumInput' autocomplete='off' min="1" max="10"> <!-- Gets number of lines for the pyramid input-->
+        <input class="btn btn-dark" type="submit" value="Calculate"> <!-- Button to proceed-->
+    </form>
+    <div class="phpOut">
+<?php 
+    if (isset($_POST['startingNumInput']) or isset($_POST['lineNumInput'])) { //checks if there's inputs from fields
+        $startingNum = $_POST["startingNumInput"]; //assign field into to variables
+        $lineNum = $_POST["lineNumInput"];
+        $counter = 0;
+        $lengthCounter = 1;
+
+        if ($startingNum == "" and $lineNum == "") { //this if else if statement will return a unique message if there is no input for 1 or more fields.
+            echo "Both fields are blank, please fill in both the blank fields.<br>";
+        } else if ($startingNum == "") {
+            echo "Field 1 is blank, please fill in the blank field.<br>";
+        } else if ($lineNum == "") {
+            echo "Field 2 is blank, please fill in the blank field.<br>";
+        }
+        else {
+            do {
+                if ($counter == $lengthCounter) { //checks if there's the number of elements in the row 
+                    echo "<br>"; //create new row
+                    $counter = 0;
+                    $lengthCounter += 1;
+                }
+                $counter += 1;
+                echo str_repeat('&nbsp;', $lineNum) . "$startingNum"; //nbsp spaces the elemenets 
+                if ($startingNum%2 == 0) { //this if statement is the logic for the next number
+                    $startingNum = $startingNum / 2;
+                }
+                else {
+                    $startingNum = $startingNum * 3;
+                }
+                $startingNum = substr($startingNum, 0, 2);    //first two digits of the output
+            }  while ($counter < $lineNum); //until the counter is < the number of lines the user asked for, repeats one fimal time.
+        }
+    }
+?>
+    </div>
+</div>
+<style>
+div.phpOut {
+    text-align: center; /* CSS used to position and make the pyramid look like a pyramid*/
+    line-height: 1.8;
+}
+</style>
+<?php include_once 'footer.php'?>
